@@ -154,6 +154,7 @@
   :ensure t
   :config
   (setq sly-lisp-implementations
+	;; Set path strings to the appropriate absolute paths to your roswell executable
          '((sbcl ("C:/Users/soeba/scoop/shims/ros.exe" "-L" "sbcl" "-Q" "run") :coding-system utf-8-unix)
            (clisp ("C:/Users/soeba/scoop/shims/ros.exe" "-L" "clisp" "-Q" "run"))
            (clozure-cl ("C:/Users/soeba/scoop/shims/ros.exe" "-L" "ccl-bin" "-Q" "run"))
