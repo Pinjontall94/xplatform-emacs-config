@@ -24,7 +24,7 @@
 ;;; =====================================
 
 ;;; Set font with broad unicode support
-(set-face-attribute 'default nil :family "Noto Sans Mono" :height 110)
+(set-face-attribute 'default nil :family "FiraCode Nerd Font Mono" :height 110)
 
 ;;; Disable splash screen
 (setq inhibit-splash-screen t)
@@ -57,7 +57,7 @@
   :ensure t)
 
 ;;; Enable line numbers globally
-(global-linum-mode)
+(global-display-line-numbers-mode)
 
 ;;; Disable menu and toolbars
 (tool-bar-mode -1)
