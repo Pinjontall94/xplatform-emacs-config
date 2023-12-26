@@ -18,13 +18,12 @@
   (require 'use-package))
 
 
-
 ;;;   =====================================
 ;;;  == Quality of life improvements... ==
 ;;; =====================================
 
 ;;; Set font with broad unicode support
-(set-face-attribute 'default nil :family "Noto Sans Mono" :height 110)
+(set-face-attribute 'default nil :family "FiraCode Nerd Font Mono" :height 110)
 
 ;;; Disable splash screen
 (setq inhibit-splash-screen t)
@@ -43,9 +42,9 @@
   (vertico-mode))
 
 ;;; Nice theme
-(use-package nord-theme
+(use-package gruvbox-theme
   :config
-  (load-theme 'nord t))
+  (load-theme 'gruvbox-dark-medium t))
 
 ;;; Better Modeline (from Doom project)
 (use-package doom-modeline
@@ -57,7 +56,7 @@
   :ensure t)
 
 ;;; Enable line numbers globally
-(global-linum-mode)
+(global-display-line-numbers-mode)
 
 ;;; Disable menu and toolbars
 (tool-bar-mode -1)
@@ -118,7 +117,6 @@
   :init (global-flycheck-mode))
 
 
-
 ;;;   =====================
 ;;;  == EVIL Config >:3 ==
 ;;; =====================
@@ -144,7 +142,6 @@
   (evil-collection-init))
 
 
-
 ;;;   ===============
 ;;;  == Languages ==
 ;;; ===============
@@ -155,14 +152,13 @@
   :config
   (setq sly-lisp-implementations
 	;; Set path strings to the appropriate absolute paths to your roswell executable
-         '((sbcl ("C:/Users/soeba/scoop/shims/ros.exe" "-L" "sbcl" "-Q" "run") :coding-system utf-8-unix)
-           (clisp ("C:/Users/soeba/scoop/shims/ros.exe" "-L" "clisp" "-Q" "run"))
-           (clozure-cl ("C:/Users/soeba/scoop/shims/ros.exe" "-L" "ccl-bin" "-Q" "run"))
-           (cmucl ("C:/Users/soeba/scoop/shims/ros.exe" "-L" "cmu-bin" "-Q" "run"))
-           (ecl ("C:/Users/soeba/scoop/shims/ros.exe" "-L" "ecl" "-Q" "run") :coding-system utf-8-unix)
-           (abcl ("C:/Users/soeba/scoop/shims/ros.exe" "-L" "abcl-bin" "-Q" "run")))))
+         '((sbcl ("/home/linuxbrew/.linuxbrew/bin/ros" "-L" "sbcl" "-Q" "run") :coding-system utf-8-unix))))
 ;;(load (expand-file-name "c:/Users/soeba/.roswell/helper.el"))
 (setq inferior-lisp-program "ros -Q run")
+
+;;;   =======================
+;;;  == NO TOUCH ZONE >:3 ==
+;;; =======================
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
