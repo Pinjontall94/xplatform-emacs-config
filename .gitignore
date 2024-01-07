@@ -7,3 +7,4 @@
 session.*
 /.cache/
 /tramp
+early-init.el
