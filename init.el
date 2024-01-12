@@ -21,15 +21,23 @@
 
 ;; Disable menu and toolbars
 (tool-bar-mode -1)
-;; (menu-bar-mode -1)
-;; (scroll-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(blink-cursor-mode -1)
+(setq visible-bell t)
 
 ;; Theme
 (use-package catppuccin-theme
   :ensure t)
 (load-theme 'catppuccin :no-confirm)
-(setq catppuccin-flavor 'mocha)
+(setq catppuccin-flavor 'macchiato)
 (catppuccin-reload)
+
+;; Modeline
+;; (NOTE: run `M-x nerd-icons-install-fonts')
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
 
 ;; Parens completion (Emacs native)
 (electric-pair-mode 1)
@@ -117,6 +125,24 @@
   :hook ((rust-ts-mode . eglot-ensure))
   :mode (("\\.rs\\'" . rust-ts-mode)))
 
+;; Python
+(use-package python-ts-mode
+  :hook ((python-ts-mode . eglot-ensure))
+  :mode (("\\.py\\'" . python-ts-mode))
+  :interpreter ("ipython" . python-ts-mode))
+
+(use-package conda
+  :ensure t
+  :config
+  (setq-default conda-env-home-directory
+	(expand-file-name "~/miniforge3")))
+
+;; Scheme
+(use-package geiser-guile :ensure t)
+(use-package geiser-chicken :ensure t)
+(use-package geiser-mit :ensure t)
+(use-package geiser-chez :ensure t)
+(use-package geiser-racket :ensure t)
 
 ;;   ======================
 ;;  == No touch zone ;3 ==
@@ -126,7 +152,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(magit flycheck evil which-key catppuccin-theme company)))
+ '(package-selected-packages
+   '(conda magit flycheck evil which-key catppuccin-theme company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

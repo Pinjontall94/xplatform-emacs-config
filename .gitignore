@@ -8,3 +8,5 @@ session.*
 /.cache/
 /tramp
 early-init.el
+/projectile-bookmarks.eld
+/projects
