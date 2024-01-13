@@ -118,7 +118,10 @@
 ;; C
 (use-package c-ts-mode
   :hook ((c-ts-mode . eglot-ensure))
-  :mode (("\\.c\\'" . c-ts-mode)))
+  :mode (("\\.c\\'" . c-ts-mode))
+  :bind (:map c-ts-mode-map
+	      ("<f5>" . recompile)
+	      ("<f6>" . eglot-format)))
 
 ;; Rust
 (use-package rust-ts-mode

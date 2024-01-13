@@ -10,3 +10,5 @@ session.*
 early-init.el
 /projectile-bookmarks.eld
 /projects
+/eshell/
+/url/
