@@ -78,7 +78,10 @@
   :bind (:map eglot-mode-map
 	      ("C-c d" . eldoc)
 	      ("C-c a" . eglot-code-actions)
-	      ("C-c r" . eglot-rename)))
+	      ("C-c r" . eglot-rename))
+  :config
+  (add-to-list 'eglot-server-programs
+	       '(verilog-mode . ("hdl_checker" "--lsp"))))
 
 ;; Which key does what again?
 (use-package which-key
@@ -147,6 +150,12 @@
 (use-package geiser-chez :ensure t)
 (use-package geiser-racket :ensure t)
 
+;; Verilog
+(use-package verilog-mode
+  :ensure t
+  :hook ((verilog-mode . eglot-ensure))
+  :mode ("\\.v\\'" "\\.sv\\'"))
+
 ;;   ======================
 ;;  == No touch zone ;3 ==
 ;; ======================
@@ -156,7 +165,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(conda magit flycheck evil which-key catppuccin-theme company)))
+   '(verilog-ext verilog-ts-mode conda magit flycheck evil which-key catppuccin-theme company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
