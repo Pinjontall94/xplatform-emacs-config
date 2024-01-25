@@ -26,19 +26,6 @@
 (blink-cursor-mode -1)
 (setq visible-bell t)
 
-;; Theme
-(use-package catppuccin-theme
-  :ensure t)
-(load-theme 'catppuccin :no-confirm)
-(setq catppuccin-flavor 'macchiato)
-(catppuccin-reload)
-
-;; Modeline
-;; (NOTE: run `M-x nerd-icons-install-fonts')
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1))
-
 ;; Parens completion (Emacs native)
 (electric-pair-mode 1)
 
@@ -62,8 +49,7 @@
   (message "Loading Magit!")
   :config
   (message "Loaded Magit!")
-  :bind (("C-x g" . magit-status)
-         ("C-x C-g" . magit-status)))
+  :bind (("C-x g" . magit-status)))
 
 ;; M-x VS Code
 ;; (Use autocompletion in all programming modes, set LSP keybindings)
@@ -154,7 +140,10 @@
 (use-package verilog-mode
   :ensure t
   :hook ((verilog-mode . eglot-ensure))
-  :mode ("\\.v\\'" "\\.sv\\'"))
+  :mode ("\\.v\\'" "\\.sv\\'")
+  :config
+  (setq verilog-compiler "verilator")
+  (setq verilog-tool verilog-compiler))
 
 ;;   ======================
 ;;  == No touch zone ;3 ==
