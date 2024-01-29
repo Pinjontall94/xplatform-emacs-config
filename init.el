@@ -19,7 +19,8 @@
 ;; NOTE: add `:font "Fira Code"` or similar to change font
 (set-face-attribute 'default t :height 100)
 
-;; Disable menu and toolbars
+;; Disable splash screen, menu and toolbars
+(setq inhibit-splash-screen t)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
@@ -80,6 +81,17 @@
   :ensure t
   :init (global-flycheck-mode))
 
+;; Snippets so you don't have to type as much
+(use-package yasnippet
+  :ensure t
+  :config
+  (add-to-list 'load-path
+	       "~/.emacs.d/plugins/yasnippet")
+  (yas-global-mode 1))
+
+(use-package yasnippet-snippets
+  :after yasnippet
+  :ensure t)
 
 ;;   =====================
 ;;  == EVIL Config >:3 ==
@@ -104,7 +116,7 @@
 ;; ===============
 ;; NOTE: use M-x treesit-install-language-grammar for new languages
 
-;; C
+;; C 📖
 (use-package c-ts-mode
   :hook ((c-ts-mode . eglot-ensure))
   :mode (("\\.c\\'" . c-ts-mode))
@@ -112,31 +124,36 @@
 	      ("<f5>" . recompile)
 	      ("<f6>" . eglot-format)))
 
-;; Rust
+;; Rust 🦀
 (use-package rust-ts-mode
   :hook ((rust-ts-mode . eglot-ensure))
   :mode (("\\.rs\\'" . rust-ts-mode)))
 
-;; Python
+;; Python 🐍
 (use-package python-ts-mode
   :hook ((python-ts-mode . eglot-ensure))
   :mode (("\\.py\\'" . python-ts-mode))
   :interpreter ("ipython" . python-ts-mode))
 
 (use-package conda
+  :after python-ts-mode
   :ensure t
   :config
   (setq-default conda-env-home-directory
 	(expand-file-name "~/miniforge3")))
 
-;; Scheme
+(use-package pyvenv
+  :after python-ts-mode
+  :ensure t)
+
+;; Scheme λ
 (use-package geiser-guile :ensure t)
 (use-package geiser-chicken :ensure t)
 (use-package geiser-mit :ensure t)
 (use-package geiser-chez :ensure t)
 (use-package geiser-racket :ensure t)
 
-;; Verilog
+;; Verilog ⚒️
 (use-package verilog-mode
   :ensure t
   :hook ((verilog-mode . eglot-ensure))
@@ -154,7 +171,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(verilog-ext verilog-ts-mode conda magit flycheck evil which-key catppuccin-theme company)))
+   '(pyvenv yasnippet-snippets yasnippet verilog-ext verilog-ts-mode conda magit flycheck evil which-key catppuccin-theme company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
