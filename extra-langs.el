@@ -7,6 +7,16 @@
   :hook ((rust-ts-mode . eglot-ensure))
   :mode (("\\.rs\\'" . rust-ts-mode)))
 
+
+;; Java ☕
+(use-package java-ts-mode
+  :hook ((java-ts-mode . eglot-ensure))
+  :mode (("\\.java\\'"))
+  :bind (:map java-ts-mode-map
+	      ("<f5>" . recompile)
+	      ("<f6>" . eglot-format))
+
+
 ;; Python 🐍
 (use-package python-ts-mode
   :hook ((python-ts-mode . eglot-ensure))
@@ -22,12 +32,14 @@
 
 (use-package pyvenv :after python-ts-mode :ensure t)
 
+
 ;; Scheme λ
 (use-package geiser-guile :ensure t :defer t)
 (use-package geiser-chicken :ensure t :defer t)
 (use-package geiser-mit :ensure t :defer t)
 (use-package geiser-chez :ensure t :defer t)
 (use-package geiser-racket :ensure t :defer t)
+
 
 ;; Verilog ⚒️
 (use-package verilog-mode
@@ -37,6 +49,7 @@
   :config
   (setq verilog-compiler "verilator")
   (setq verilog-tool verilog-compiler))
+
 
 (message "loaded langs.el! :3")
 (provide 'extra-langs)
