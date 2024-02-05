@@ -23,3 +23,7 @@ early-init.el
 
 # Undo-tree save-files
 *.~undo-tree
+/games/
+/ido.last
+*.bak
+/recentf
