@@ -11,10 +11,7 @@
 ;; Java ☕
 (use-package java-ts-mode
   :hook ((java-ts-mode . eglot-ensure))
-  :mode (("\\.java\\'"))
-  :bind (:map java-ts-mode-map
-	      ("<f5>" . recompile)
-	      ("<f6>" . eglot-format))
+  :mode (("\\.java\\'" . java-ts-mode)))
 
 
 ;; Python 🐍
@@ -28,7 +25,7 @@
   :ensure t
   :config
   (setq-default conda-env-home-directory
-	(expand-file-name "~/miniforge3")))
+		(expand-file-name "~/miniforge3")))
 
 (use-package pyvenv :after python-ts-mode :ensure t)
 
