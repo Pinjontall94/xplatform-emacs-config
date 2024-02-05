@@ -12,3 +12,14 @@ early-init.el
 /projects
 /eshell/
 /url/
+# Compiled
+*.elc
+
+# Packaging
+.cask
+
+# Backup files
+*~
+
+# Undo-tree save-files
+*.~undo-tree
