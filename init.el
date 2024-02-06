@@ -22,6 +22,7 @@
 
 ;; Set the config folder
 (setq-default emacs-conf-folder (expand-file-name "~/code/emacslisp/xplatform-emacs-config"))
+(add-to-list 'load-path (expand-file-name "custom/" emacs-conf-folder))
 
 ;; Parens completion (Emacs native)
 (electric-pair-mode 1)
@@ -54,17 +55,6 @@
   :ensure t
   :config
   (dashboard-setup-startup-hook))
-
-(use-package doom-themes
-  :ensure t
-  :config
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-gruvbox t)
-  (doom-themes-visual-bell-config)
-  (setq-default doom-themes-treemacs-theme "doom-colors") ; use "doom-colors" for less minimal icon theme
-  (doom-themes-treemacs-config)
-  (doom-themes-org-config))
 
 ;; Set exec-path to match $PATH environment variable
 (use-package exec-path-from-shell
@@ -132,6 +122,7 @@
   :config
   (global-set-key (kbd "M-F") #'format-code)
   (add-hook 'prog-mode-hook #'format-all-ensure-formatter)
+  (add-hook 'before-save-hook #'format-code)
   (setq-default format-all-formatters '(("C" (clang-format "--style=Microsoft")))))
 
 ;; Custom global keybindings
@@ -166,17 +157,12 @@
 ;; C 📖
 (use-package c-ts-mode
   :hook ((c-ts-mode . eglot-ensure))
-  :mode (("\\.c\\'" . c-ts-mode)
-	 ("\\.l\\'" . c-ts-mode))
-  :bind (:map c-ts-mode-map
-	      ("<f5>" . recompile)
-	      ("<f6>" . eglot-format))
+  :mode (("\\.c\\'" . c-ts-mode))
   :config
-  (setq-default c-default-style "linux"
-		c-basic-offset 4))
+  (setq-default c-ts-mode-indent-style "k&r"
+		c-ts-mode-indent-offset 4))
 
 ;; Load the rest of the langs so we don't clog up init.el ;3
-(load (expand-file-name "extra-langs.el" emacs-conf-folder))
 (require 'extra-langs)
 
 ;;   ======================
@@ -188,9 +174,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("be84a2e5c70f991051d4aaf0f049fa11c172e5d784727e0b525565bb1533ec78" "e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "0c83e0b50946e39e237769ad368a08f2cd1c854ccbcd1a01d39fdce4d6f86478" "7e377879cbd60c66b88e51fad480b3ab18d60847f31c435f15f5df18bdb18184" "56044c5a9cc45b6ec45c0eb28df100d3f0a576f18eef33ff8ff5d32bac2d9700" "e4a702e262c3e3501dfe25091621fe12cd63c7845221687e36a79e17cf3a67e0" "aec7b55f2a13307a55517fdf08438863d694550565dee23181d2ebd973ebd6b8" "80214de566132bf2c844b9dee3ec0599f65c5a1f2d6ff21a2c8309e6e70f9242" default))
+   '("7b8f5bbdc7c316ee62f271acf6bcd0e0b8a272fdffe908f8c920b0ba34871d98" "be84a2e5c70f991051d4aaf0f049fa11c172e5d784727e0b525565bb1533ec78" "e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "0c83e0b50946e39e237769ad368a08f2cd1c854ccbcd1a01d39fdce4d6f86478" "7e377879cbd60c66b88e51fad480b3ab18d60847f31c435f15f5df18bdb18184" "56044c5a9cc45b6ec45c0eb28df100d3f0a576f18eef33ff8ff5d32bac2d9700" "e4a702e262c3e3501dfe25091621fe12cd63c7845221687e36a79e17cf3a67e0" "aec7b55f2a13307a55517fdf08438863d694550565dee23181d2ebd973ebd6b8" "80214de566132bf2c844b9dee3ec0599f65c5a1f2d6ff21a2c8309e6e70f9242" default))
  '(package-selected-packages
-   '(format-all catppuccin pyvenv yasnippet-snippets yasnippet verilog-ext verilog-ts-mode conda magit flycheck evil which-key catppuccin-theme company)))
+   '(smart-tabs-mode format-all catppuccin pyvenv yasnippet-snippets yasnippet verilog-ext verilog-ts-mode conda magit flycheck evil which-key catppuccin-theme company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
