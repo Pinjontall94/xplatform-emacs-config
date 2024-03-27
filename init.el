@@ -7,16 +7,17 @@
 ;; =====================================
 
 
-;; Maximize startup, disable menu and toolbars, enable parens completion & visible bell
+;; Maximize startup, disable menu and toolbars, enable parens & visible bell
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (electric-pair-mode 1)
 (setq-default visible-bell t)
-(tool-bar-mode -1) (menu-bar-mode -1)
-(scroll-bar-mode -1) (blink-cursor-mode -1)
+(tool-bar-mode -1) (scroll-bar-mode -1) (blink-cursor-mode -1) (menu-bar-mode -1)
+(column-number-mode 1)
 (load-theme 'deeper-blue)
 
 ;; Set the config folder
-(setq-default emacs-conf-folder (expand-file-name "~/code/emacslisp/xplatform-emacs-config"))
+(setq-default emacs-conf-folder
+	      (expand-file-name "~/code/emacslisp/xplatform-emacs-config"))
 (add-to-list 'load-path (expand-file-name "pinjontall94/" emacs-conf-folder))
 
 ;; Autoscroll compilation window
@@ -44,6 +45,7 @@
 ;; Set exec-path to match $PATH environment variable
 (use-package exec-path-from-shell
   :ensure t
+  :init (setq exec-path-from-shell-arguments nil)
   :config
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
@@ -95,15 +97,14 @@
 
 ;; Autoformatting
 (use-package format-all
-  :preface
-  (defun format-code ()
-    "Auto-format whole buffer."
-    (interactive)
-    (format-all-buffer))
+  :defer t
+  :commands format-all-mode
+  :hook (prog-mode . format-all-mode)
   :config
-  (add-hook 'prog-mode-hook #'format-all-ensure-formatter)
-  (add-hook 'before-save-hook #'format-code)
-  (setq-default format-all-formatters '(("C" (clang-format "--style=Microsoft")))))
+  (setq-default format-all-formatters
+                '(("C"     (clang-format "--style=Microsoft"))
+                  ("Shell" (shfmt "-i" "4" "-ci"))
+		  ("HTML"  prettier))))
 
 ;; Custom global keybindings
 (global-set-key (kbd "M-<return>") #'recompile)
@@ -114,17 +115,13 @@
 
 (use-package evil
   :ensure t
-  :init
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-  (setq evil-want-keybinding nil)
-  :config
-  (evil-mode 1))
+  :init (setq evil-want-keybinding nil)
+  :config (evil-mode 1))
 
 (use-package evil-collection
   :after evil
   :ensure t
-  :config
-  (evil-collection-init))
+  :config (evil-collection-init))
 
 ;;   ===============
 ;;  == Languages ==
@@ -132,10 +129,11 @@
 ;; NOTE: use M-x treesit-install-language-grammar for new languages
 
 ;; Elisp 📝
-(use-package elisp-mode :defer t :config (flycheck-mode -1))
+(use-package elisp-mode :defer t)
 
 ;; C 📖
 (use-package c-ts-mode
+  :after format-all
   :hook ((c-ts-mode . eglot-ensure))
   :mode (("\\.c\\'" . c-ts-mode))
   :config
@@ -151,19 +149,3 @@
 ;;   ======================
 ;;  == No touch zone ;3 ==
 ;; ======================
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("b5fd9c7429d52190235f2383e47d340d7ff769f141cd8f9e7a4629a81abc6b19" "7b8f5bbdc7c316ee62f271acf6bcd0e0b8a272fdffe908f8c920b0ba34871d98" "be84a2e5c70f991051d4aaf0f049fa11c172e5d784727e0b525565bb1533ec78" "e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" "0c83e0b50946e39e237769ad368a08f2cd1c854ccbcd1a01d39fdce4d6f86478" "7e377879cbd60c66b88e51fad480b3ab18d60847f31c435f15f5df18bdb18184" "56044c5a9cc45b6ec45c0eb28df100d3f0a576f18eef33ff8ff5d32bac2d9700" "e4a702e262c3e3501dfe25091621fe12cd63c7845221687e36a79e17cf3a67e0" "aec7b55f2a13307a55517fdf08438863d694550565dee23181d2ebd973ebd6b8" "80214de566132bf2c844b9dee3ec0599f65c5a1f2d6ff21a2c8309e6e70f9242" default))
- '(package-selected-packages
-   '(smart-tabs-mode format-all catppuccin pyvenv yasnippet-snippets yasnippet verilog-ext verilog-ts-mode conda magit flycheck evil which-key catppuccin-theme company)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-(provide 'init)

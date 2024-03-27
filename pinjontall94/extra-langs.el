@@ -4,18 +4,21 @@
 ;;; Code:
 ;; Rust 🦀
 (use-package rust-ts-mode
+  :defer t
   :hook ((rust-ts-mode . eglot-ensure))
   :mode (("\\.rs\\'" . rust-ts-mode)))
 
 
 ;; Java ☕
 (use-package java-ts-mode
+  :defer t
   :hook ((java-ts-mode . eglot-ensure))
   :mode (("\\.java\\'" . java-ts-mode)))
 
 
 ;; Python 🐍
 (use-package python-ts-mode
+  :defer t
   :hook ((python-ts-mode . eglot-ensure))
   :mode (("\\.py\\'" . python-ts-mode))
   :interpreter ("ipython" . python-ts-mode))
