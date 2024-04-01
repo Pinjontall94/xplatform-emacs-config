@@ -16,9 +16,8 @@
 (load-theme 'deeper-blue)
 
 ;; Set the config folder
-(setq-default emacs-conf-folder
-	      (expand-file-name "~/code/emacslisp/xplatform-emacs-config"))
-(add-to-list 'load-path (expand-file-name "pinjontall94/" emacs-conf-folder))
+(let ((default-directory  "~/.emacs.d/lisp/"))
+  (normal-top-level-add-subdirs-to-load-path))
 
 ;; Autoscroll compilation window
 (setq-default compilation-scroll-output t)
@@ -97,6 +96,7 @@
 
 ;; Autoformatting
 (use-package format-all
+  :ensure t
   :defer t
   :commands format-all-mode
   :hook (prog-mode . format-all-mode)
@@ -149,3 +149,16 @@
 ;;   ======================
 ;;  == No touch zone ;3 ==
 ;; ======================
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(geiser-racket geiser-chez geiser-mit geiser-chicken geiser-guile pyvenv conda evil-collection yasnippet-snippets which-key magit flycheck exec-path-from-shell evil dashboard company annalist)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
