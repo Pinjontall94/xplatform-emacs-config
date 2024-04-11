@@ -13,11 +13,9 @@
 (setq-default visible-bell t)
 (tool-bar-mode -1) (scroll-bar-mode -1) (blink-cursor-mode -1) (menu-bar-mode -1)
 (column-number-mode 1)
-(load-theme 'deeper-blue)
 
-;; Set the config folder
-(let ((default-directory  "~/.emacs.d/lisp/"))
-  (normal-top-level-add-subdirs-to-load-path))
+;; Load user lisp projects to the autoload path
+(add-to-list 'load-path "~/.emacs.d/lisp/")
 
 ;; Autoscroll compilation window
 (setq-default compilation-scroll-output t)
@@ -36,10 +34,19 @@
  kept-old-versions 2
  version-control t)       ; use versioned backups
 
+;; Nice theme, dashboard, and modeline for the modern era ;3
+(load-theme 'catppuccin t)
+(setq-default catppuccin-flavor 'frappe) ;; or 'latte, 'macchiato, or 'mocha
+(catppuccin-reload)
+
 (use-package dashboard
   :ensure t
   :config
   (dashboard-setup-startup-hook))
+
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode))
 
 ;; Set exec-path to match $PATH environment variable
 (use-package exec-path-from-shell
@@ -61,7 +68,8 @@
   :hook (prog-mode . company-mode)
   :config
   (setq company-idle-delay 0.1
-	company-minimum-prefix-length 1))
+	company-minimum-prefix-length 1)
+  (global-company-mode))
 
 (use-package eglot
   :bind (:map eglot-mode-map
@@ -99,12 +107,7 @@
   :ensure t
   :defer t
   :commands format-all-mode
-  :hook (prog-mode . format-all-mode)
-  :config
-  (setq-default format-all-formatters
-                '(("C"     (clang-format "--style=Microsoft"))
-                  ("Shell" (shfmt "-i" "4" "-ci"))
-		  ("HTML"  prettier))))
+  :hook (prog-mode . format-all-mode))
 
 ;; Custom global keybindings
 (global-set-key (kbd "M-<return>") #'recompile)
@@ -131,10 +134,14 @@
 ;; Elisp 📝
 (use-package elisp-mode :defer t)
 
+
 ;; C 📖
 (use-package c-ts-mode
   :after format-all
-  :hook ((c-ts-mode . eglot-ensure))
+  :hook ((c-ts-mode . eglot-ensure)
+	 (c-ts-mode . (lambda ()
+			(setq format-all-formatters
+			      '(("C" (clang-format "--style=Microsoft")))))))
   :mode (("\\.c\\'" . c-ts-mode))
   :config
   (setq-default c-ts-mode-indent-style "linux"
@@ -154,8 +161,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(geiser-racket geiser-chez geiser-mit geiser-chicken geiser-guile pyvenv conda evil-collection yasnippet-snippets which-key magit flycheck exec-path-from-shell evil dashboard company annalist)))
+ '(initial-scratch-message
+   ";; This buffer is dedicated, in respect and admiration,\12;; to the spirit that lives in the computer~ UwU...\12\12")
+ )
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
