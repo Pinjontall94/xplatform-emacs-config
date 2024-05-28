@@ -4,6 +4,12 @@
 ;;; Code:
 (require 'format-all)
 
+;; Go 🐿️
+(use-package go-mode
+  :ensure t :defer t
+  :hook (go-mode . eglot-ensure))
+
+
 ;; C# 🪟
 (use-package csharp-mode
   :ensure t :after format-all
@@ -25,6 +31,10 @@
 	 (mhtml-mode . (lambda ()
 			 (setq format-all-formatters
 			       '(("HTML" prettier)))))))
+;; zig 🦎
+(use-package zig-mode
+  :ensure t :defer
+  :hook ((zig-mode . eglot-ensure)))
 
 
 ;; Rust 🦀
