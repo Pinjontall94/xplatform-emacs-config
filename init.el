@@ -20,7 +20,10 @@
  version-control t            ; use versioned backups
  inhibit-splash-screen t
  initial-scratch-message
-   ";; This buffer is dedicated, in respect and admiration,\12;; to the spirit that lives in the computer~ UwU...\12\12"
+ ";; This buffer is dedicated, in respect and admiration,\12;; to the spirit that lives in the computer~ UwU...\12\12"
+ viper-mode t
+ viper-expert-level 1
+ viper-inhibit-startup-message t
  use-package-always-defer t)  ; use ":demand t" to explicitly load packages
 
 ;; Enable parens matching & column numbers
@@ -90,18 +93,6 @@
 
 ;; Custom global keybindings
 (global-set-key (kbd "M-<return>") #'recompile)
-
-
-;;   =====================
-;;  == EVIL Config >:3 ==
-;; =====================
-
-(use-package evil :ensure t :demand t
-  :init (setq evil-want-keybinding nil)
-  :config (evil-mode 1))
-
-(use-package evil-collection :ensure t :demand t :after evil
-  :config (evil-collection-init))
 
 
 ;;   ===============
