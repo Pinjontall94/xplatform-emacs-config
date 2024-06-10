@@ -21,7 +21,7 @@
  inhibit-splash-screen t
  initial-scratch-message
  ";; This buffer is dedicated, in respect and admiration,\12;; to the spirit that lives in the computer~ UwU...\12\12"
- viper-mode t
+ viper-mode t		      ; toggle with C-z (see viper-change-state-*)
  viper-expert-level 1
  viper-inhibit-startup-message t
  use-package-always-defer t)  ; use ":demand t" to explicitly load packages
