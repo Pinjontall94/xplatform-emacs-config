@@ -4,44 +4,33 @@
 ;;; Code:
 (require 'format-all)
 
-;; Go 🐿️
-(use-package go-mode
-  :ensure t :defer t
-  :hook (go-mode . eglot-ensure))
 
+;; Cmake 🔺
+(use-package cmake-mode :ensure t :defer t)
+
+;; Go 🐿️
+(use-package go-mode :ensure t :defer t)
 
 ;; C# 🪟
-(use-package csharp-mode
-  :ensure t :after format-all
-  :hook (csharp-mode . eglot-ensure))
+(use-package csharp-mode :ensure t :defer t)
 
 
 ;; Unix shell 🐚
-(use-package sh-mode
-  :after format-all
-  :hook ((sh-mode . eglot-ensure)
-	 (sh-mode . (lambda ()
+(use-package sh-mode :defer t
+  :hook (sh-mode . (lambda ()
 		      (setq format-all-formatters
-			    '(("Shell" (shfmt "-i" "4" "-ci"))))))))
+			    '(("Shell" (shfmt "-i" "4" "-ci")))))))
 
 ;; HTML/CSS 🌐
-(use-package mhtml-mode
-  :ensure t :after format-all
-  :hook ((mhtml-mode . eglot-ensure)
-	 (mhtml-mode . (lambda ()
+(use-package mhtml-mode :ensure t :defer t
+  :hook (mhtml-mode . (lambda ()
 			 (setq format-all-formatters
-			       '(("HTML" prettier)))))))
+			       '(("HTML" prettier))))))
 ;; zig 🦎
-(use-package zig-mode
-  :ensure t :defer
-  :hook ((zig-mode . eglot-ensure)))
-
+(use-package zig-mode :ensure t :defer t)
 
 ;; Rust 🦀
-(use-package rust-ts-mode
-  :ensure t :after format-all
-  :hook ((rust-ts-mode . eglot-ensure))
-  :mode (("\\.rs\\'" . rust-ts-mode)))
+(use-package rust-ts-mode :ensure t :defer t)
 
 
 ;; Java ☕
@@ -89,6 +78,10 @@
   :config
   (setq verilog-compiler "verilator")
   (setq verilog-tool verilog-compiler))
+
+;; fish 🐠
+(use-package fish-mode :ensure t :defer t
+  :mode "\\.fish\\'")
 
 
 (message "loaded langs.el! :3")

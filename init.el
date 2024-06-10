@@ -2,69 +2,58 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
+
 ;;   =====================================
 ;;  == Quality of life improvements... ==
 ;; =====================================
 
+;; What follows is basically emacs' environment variables
+(setq-default
+ visible-bell t
+ compilation-scroll-output t  ; autoscroll the compilation window
+ backup-by-copying t          ; don't clobber symlinks
+ backup-directory-alist
+ '(("." . "~/.saves/"))       ; don't litter my fs tree
+ delete-old-versions t
+ kept-new-versions 6
+ kept-old-versions 2
+ version-control t            ; use versioned backups
+ inhibit-splash-screen t
+ initial-scratch-message
+   ";; This buffer is dedicated, in respect and admiration,\12;; to the spirit that lives in the computer~ UwU...\12\12"
+ use-package-always-defer t)  ; use ":demand t" to explicitly load packages
 
-;; Maximize startup, disable menu and toolbars, enable parens & visible bell
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
-(electric-pair-mode 1)
-(setq-default visible-bell t)
-(tool-bar-mode -1) (scroll-bar-mode -1) (blink-cursor-mode -1) (menu-bar-mode -1)
-(column-number-mode 1)
+;; Enable parens matching & column numbers
+(electric-pair-mode 1) (column-number-mode 1)
 
 ;; Load user lisp projects to the autoload path
 (add-to-list 'load-path "~/.emacs.d/lisp/")
-
-;; Autoscroll compilation window
-(setq-default compilation-scroll-output t)
 
 ;; Enable lines
 (defun enable-lines () (display-line-numbers-mode t))
 (add-hook 'prog-mode-hook #'enable-lines)
 
-;; Config autosave files
-(setq
- backup-by-copying t      ; don't clobber symlinks
- backup-directory-alist
- '(("." . "~/.saves/"))    ; don't litter my fs tree
- delete-old-versions t
- kept-new-versions 6
- kept-old-versions 2
- version-control t)       ; use versioned backups
-
 ;; Nice theme, dashboard, and modeline for the modern era ;3
-(load-theme 'catppuccin t)
-(setq-default catppuccin-flavor 'frappe) ;; or 'latte, 'macchiato, or 'mocha
-(catppuccin-reload)
-
-(use-package dashboard
-  :ensure t
+(use-package catppuccin-theme :ensure t :demand t
   :config
-  (dashboard-setup-startup-hook))
-
-(use-package doom-modeline
-  :ensure t
-  :hook (after-init . doom-modeline-mode))
+  (catppuccin-load-flavor 'frappe)) ;; or 'latte, 'macchiato, or 'mocha
+   
+;; (use-package dashboard :ensure t :demand t :config (dashboard-setup-startup-hook))
+(use-package doom-modeline :ensure t :hook (after-init . doom-modeline-mode))
 
 ;; Set exec-path to match $PATH environment variable
-(use-package exec-path-from-shell
-  :ensure t
+(use-package exec-path-from-shell :ensure t :demand t
   :init (setq exec-path-from-shell-arguments nil)
   :config
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 
 ;; Git integration
-(use-package magit
-  :ensure t
-  :bind (("C-x g" . magit-status)))
+(use-package magit :ensure t :bind (("C-x g" . magit-status)))
 
 ;; M-x VS Code
 ;; Autocompletion and language servers
-(use-package company
-  :ensure t
+(use-package company :ensure t
   :hook (prog-mode . company-mode)
   :config
   (setq company-idle-delay 0.1
@@ -81,50 +70,39 @@
 	       '(verilog-mode . ("hdl_checker" "--lsp"))))
 
 ;; Which key does what again?
-(use-package which-key
-  :ensure t
-  :config
-  (which-key-mode))
+(use-package which-key :ensure t :demand t :config (which-key-mode))
 
 ;; Syntax checking
-(use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode))
+(use-package flycheck :ensure t :init (global-flycheck-mode))
 
 ;; Code snippets so you don't have to type as much
-(use-package yasnippet
-  :ensure t
+(use-package yasnippet :ensure t :demand t
   :config
   (add-to-list 'load-path "~/.emacs.d/plugins/yasnippet")
   (yas-global-mode 1))
 
-(use-package yasnippet-snippets
-  :after yasnippet
-  :ensure t)
+(use-package yasnippet-snippets :ensure t :after yasnippet)
 
 ;; Autoformatting
-(use-package format-all
-  :ensure t
-  :defer t
+(use-package format-all :ensure t
   :commands format-all-mode
   :hook (prog-mode . format-all-mode))
 
 ;; Custom global keybindings
 (global-set-key (kbd "M-<return>") #'recompile)
 
+
 ;;   =====================
 ;;  == EVIL Config >:3 ==
 ;; =====================
 
-(use-package evil
-  :ensure t
+(use-package evil :ensure t :demand t
   :init (setq evil-want-keybinding nil)
   :config (evil-mode 1))
 
-(use-package evil-collection
-  :after evil
-  :ensure t
+(use-package evil-collection :ensure t :demand t :after evil
   :config (evil-collection-init))
+
 
 ;;   ===============
 ;;  == Languages ==
@@ -132,16 +110,14 @@
 ;; NOTE: use M-x treesit-install-language-grammar for new languages
 
 ;; Elisp 📝
-(use-package elisp-mode :defer t)
-
+(use-package elisp-mode)
 
 ;; C 📖
 (use-package c-ts-mode
   :after format-all
-  :hook ((c-ts-mode . eglot-ensure)
-	 (c-ts-mode . (lambda ()
+  :hook (c-ts-mode . (lambda ()
 			(setq format-all-formatters
-			      '(("C" (clang-format "--style=Microsoft")))))))
+			      '(("C" (clang-format "--style=Microsoft"))))))
   :mode (("\\.c\\'" . c-ts-mode))
   :config
   (setq-default c-ts-mode-indent-style "linux"
@@ -152,21 +128,3 @@
 
 ;; keybindings
 (global-set-key (kbd "M-RET") #'recompile)
-
-;;   ======================
-;;  == No touch zone ;3 ==
-;; ======================
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(initial-scratch-message
-   ";; This buffer is dedicated, in respect and admiration,\12;; to the spirit that lives in the computer~ UwU...\12\12")
- )
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
