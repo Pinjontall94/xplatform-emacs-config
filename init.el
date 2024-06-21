@@ -20,8 +20,9 @@
  version-control t            ; use versioned backups
  inhibit-splash-screen t
  initial-scratch-message
-   ";; This buffer is dedicated, in respect and admiration,\12;; to the spirit that lives in the computer~ UwU...\12\12"
- use-package-always-defer t)  ; use ":demand t" to explicitly load packages
+ ";; This buffer is dedicated, in respect and admiration,\12;; to the spirit that lives in the computer~ UwU...\12\12")
+
+(add-to-list 'initial-frame-alist '(width . 124))
 
 ;; Enable parens matching & column numbers
 (electric-pair-mode 1) (column-number-mode 1)
@@ -34,22 +35,20 @@
 (add-hook 'prog-mode-hook #'enable-lines)
 
 ;; Nice theme, dashboard, and modeline for the modern era ;3
-(use-package catppuccin-theme :ensure t :demand t
+(use-package catppuccin-theme :ensure t
   :config
-  (catppuccin-load-flavor 'frappe)) ;; or 'latte, 'macchiato, or 'mocha
-   
-;; (use-package dashboard :ensure t :demand t :config (dashboard-setup-startup-hook))
+  (catppuccin-load-flavor 'latte)) ;; 'latte, 'macchiato, 'frappe or 'mocha
 (use-package doom-modeline :ensure t :hook (after-init . doom-modeline-mode))
 
 ;; Set exec-path to match $PATH environment variable
-(use-package exec-path-from-shell :ensure t :demand t
+(use-package exec-path-from-shell :ensure t
   :init (setq exec-path-from-shell-arguments nil)
   :config
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 
 ;; Git integration
-(use-package magit :ensure t :bind (("C-x g" . magit-status)))
+(use-package magit :ensure t :defer t :bind (("C-x g" . magit-status)))
 
 ;; M-x VS Code
 ;; Autocompletion and language servers
@@ -70,13 +69,13 @@
 	       '(verilog-mode . ("hdl_checker" "--lsp"))))
 
 ;; Which key does what again?
-(use-package which-key :ensure t :demand t :config (which-key-mode))
+(use-package which-key :ensure t :config (which-key-mode))
 
 ;; Syntax checking
-(use-package flycheck :ensure t :init (global-flycheck-mode))
+(use-package flycheck :ensure t :defer t :init (global-flycheck-mode))
 
 ;; Code snippets so you don't have to type as much
-(use-package yasnippet :ensure t :demand t
+(use-package yasnippet :ensure t
   :config
   (add-to-list 'load-path "~/.emacs.d/plugins/yasnippet")
   (yas-global-mode 1))
@@ -95,22 +94,22 @@
 ;;   =====================
 ;;  == EVIL Config >:3 ==
 ;; =====================
+;; Highlight the following lines, run
+;; `Alt-x uncomment-region`, save and reload to enable vim-keybindings
 
-(use-package evil :ensure t :demand t
-  :init (setq evil-want-keybinding nil)
-  :config (evil-mode 1))
+;; (use-package evil :ensure t
+;;   :init (setq evil-want-keybinding nil)
+;;   :config (evil-mode 1))
 
-(use-package evil-collection :ensure t :demand t :after evil
-  :config (evil-collection-init))
+;; (use-package evil-collection :ensure t :after evil
+;;   :config (evil-collection-init))
 
+;; (use-package treemacs-evil :ensure t :after (treemacs evil))
 
 ;;   ===============
 ;;  == Languages ==
 ;; ===============
 ;; NOTE: use M-x treesit-install-language-grammar for new languages
-
-;; Elisp 📝
-(use-package elisp-mode)
 
 ;; C 📖
 (use-package c-ts-mode
@@ -121,10 +120,31 @@
   :mode (("\\.c\\'" . c-ts-mode))
   :config
   (setq-default c-ts-mode-indent-style "linux"
-		c-ts-mode-indent-offset 4))
+		c-mode-indent-style "inux"
+		c-ts-mode-indent-offset 4
+		c-mode-indent-offset 4))
 
 ;; Load the rest of the langs so we don't clog up init.el ;3
 (require 'extra-langs)
+
+;;   ==============
+;;  == Treemacs ==
+;; ==============
+(use-package treemacs :ensure t
+  :bind
+  (:map global-map
+	("M-0"       . treemacs-select-window)
+	("C-x t 1"   . treemacs-delete-other-windows)
+	("C-x t t"   . treemacs)
+	("C-x t d"   . treemacs-select-directory)
+	("C-x t B"   . treemacs-bookmark)
+	("C-x t C-t" . treemacs-find-file)
+	("C-x t M-t" . treemacs-find-tag)))
+(use-package treemacs-projectile :ensure t :after (treemacs projectile))
+(use-package treemacs-icons-dired :ensure t
+  :hook (dired-mode . treemacs-icons-dired-enable-once))
+(use-package treemacs-magit :ensure t :after (treemacs magit))
+(add-hook 'emacs-startup-hook 'treemacs)
 
 ;; keybindings
 (global-set-key (kbd "M-RET") #'recompile)
