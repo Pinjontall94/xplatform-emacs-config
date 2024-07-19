@@ -83,6 +83,12 @@
 (use-package fish-mode :ensure t :defer t
   :mode "\\.fish\\'")
 
+(use-package wat-ts-mode :ensure t :defer t
+  :mode "\\.wat\\'")
+
+
+
+
 
 (message "loaded langs.el! :3")
 (provide 'extra-langs)

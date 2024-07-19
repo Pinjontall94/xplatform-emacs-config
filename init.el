@@ -19,20 +19,23 @@
  kept-old-versions 2
  version-control t            ; use versioned backups
  inhibit-splash-screen t
+ org-agenda-files '("~/org")  ; Org(anize) your life, girl
  initial-scratch-message
  ";; This buffer is dedicated, in respect and admiration,\12;; to the spirit that lives in the computer~ UwU...\12\12")
 
-(add-to-list 'initial-frame-alist '(width . 124))
-
-;; Enable parens matching & column numbers
-(electric-pair-mode 1) (column-number-mode 1)
+;; Enable parens matching, column numbers, and tab-bar
+(electric-pair-mode 1) (column-number-mode 1) (tab-bar-mode 1)
 
 ;; Load user lisp projects to the autoload path
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
 ;; Enable lines
-(defun enable-lines () (display-line-numbers-mode t))
-(add-hook 'prog-mode-hook #'enable-lines)
+(add-hook 'prog-mode-hook
+	  (lambda ()
+	    (display-line-numbers-mode t)))
+
+;; Nice ligatures
+(add-hook 'prog-mode-hook #'prettify-symbols-mode)
 
 ;; Nice theme, dashboard, and modeline for the modern era ;3
 (use-package catppuccin-theme :ensure t
@@ -97,14 +100,14 @@
 ;; Highlight the following lines, run
 ;; `Alt-x uncomment-region`, save and reload to enable vim-keybindings
 
-;; (use-package evil :ensure t
-;;   :init (setq evil-want-keybinding nil)
-;;   :config (evil-mode 1))
+(use-package evil :ensure t
+  :init (setq evil-want-keybinding nil)
+  :config (evil-mode 1))
 
-;; (use-package evil-collection :ensure t :after evil
-;;   :config (evil-collection-init))
+(use-package evil-collection :ensure t :after evil
+  :config (evil-collection-init))
 
-;; (use-package treemacs-evil :ensure t :after (treemacs evil))
+(use-package treemacs-evil :ensure t :after (treemacs evil))
 
 ;;   ===============
 ;;  == Languages ==
@@ -144,7 +147,24 @@
 (use-package treemacs-icons-dired :ensure t
   :hook (dired-mode . treemacs-icons-dired-enable-once))
 (use-package treemacs-magit :ensure t :after (treemacs magit))
-(add-hook 'emacs-startup-hook 'treemacs)
+(use-package treemacs-tab-bar :ensure t :after (treemacs))
 
 ;; keybindings
 (global-set-key (kbd "M-RET") #'recompile)
+(global-set-key (kbd "C-c l") #'org-store-link)
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(wat-ts-mode zig-mode yasnippet-snippets which-key treemacs-projectile treemacs-magit treemacs-icons-dired treemacs-evil pyvenv markdown-mode go-mode geiser-racket geiser-mit geiser-guile geiser-chicken geiser-chez format-all flycheck fish-mode exec-path-from-shell evil-collection doom-modeline dashboard conda company cmake-mode catppuccin-theme)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

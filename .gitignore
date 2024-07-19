@@ -27,3 +27,4 @@ early-init.el
 /ido.last
 *.bak
 /recentf
+/bookmarks
