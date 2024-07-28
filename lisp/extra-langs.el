@@ -1,4 +1,4 @@
-;;; langs.el --- Sammi's Emacs Extra Language Configs -*- lexical-binding: t -*-
+;;; extra-langs.el --- Sammi's Emacs Extra Language Configs -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; This file contains extra language specific configs to keep from overpopulating init.el
 ;;; Code:
@@ -86,10 +86,10 @@
 (use-package wat-ts-mode :ensure t :defer t
   :mode "\\.wat\\'")
 
+(use-package docker-compose-mode :ensure t :defer t)
 
 
 
-
-(message "loaded langs.el! :3")
+(message "loaded extra-langs.el! :3")
 (provide 'extra-langs)
 ;;; extra-langs.el ends here
