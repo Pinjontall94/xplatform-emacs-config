@@ -1,6 +1,8 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
+(when (not package-archive-contents)
+  (package-refresh-contents))
 
 ;; Load user lisp projects to the autoload path
 (add-to-list 'load-path "~/.emacs.d/lisp/")
@@ -41,6 +43,7 @@
 	      ("C-c a" . eglot-code-actions)
 	      ("C-c r" . eglot-rename))
   :config
+  (setq eglot-ignored-server-capabilities '(:documentHighlightProvider))
   (add-to-list 'eglot-server-programs
 	       '(verilog-mode . ("hdl_checker" "--lsp"))))
 
