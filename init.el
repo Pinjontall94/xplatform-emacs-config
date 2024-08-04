@@ -12,10 +12,10 @@
 ;; =====================================
 (require 'emacs-conf)
 
-;; Nice theme, dashboard, and modeline for the modern era ;3
-(use-package catppuccin-theme :ensure t
+;; Nice theme and modeline for the modern era ;3
+(use-package adwaita-dark-theme :ensure t
   :config
-  (catppuccin-load-flavor 'mocha)) ;; 'latte, 'macchiato, 'frappe or 'mocha
+  (load-theme 'adwaita-dark t))
 (use-package doom-modeline :ensure t :hook (after-init . doom-modeline-mode))
 
 ;; Set exec-path to match $PATH environment variable
@@ -71,7 +71,7 @@
 ;; =====================
 ;; Highlight the following line, run
 ;; `Alt-x uncomment-region`, save and reload to enable vim-keybindings
-;; (require 'evil-conf)
+(require 'evil-conf)
 
 ;;   ===============
 ;;  == Languages ==
@@ -108,9 +108,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files '("/home/sammi/org/notes.org" "/home/sammi/org/todo.org"))
+ '(custom-safe-themes
+   '("ee0785c299c1d228ed30cf278aab82cf1fa05a2dc122e425044e758203f097d2" default))
+ '(org-agenda-files '("/home/sammi/org/notes.org" "/home/sammi/org/todo.org") t)
  '(package-selected-packages
-   '(docker-compose-mode simple-httpd dired-auto-readme wat-ts-mode zig-mode yasnippet-snippets which-key treemacs-projectile treemacs-magit treemacs-icons-dired treemacs-evil pyvenv markdown-mode go-mode geiser-racket geiser-mit geiser-guile geiser-chicken geiser-chez format-all flycheck fish-mode exec-path-from-shell evil-collection doom-modeline dashboard conda company cmake-mode catppuccin-theme)))
+   '(php-mode htmlize docker-compose-mode simple-httpd dired-auto-readme wat-ts-mode zig-mode yasnippet-snippets which-key treemacs-projectile treemacs-magit treemacs-icons-dired treemacs-evil pyvenv markdown-mode go-mode geiser-racket geiser-mit geiser-guile geiser-chicken geiser-chez format-all flycheck fish-mode exec-path-from-shell evil-collection doom-modeline dashboard conda company cmake-mode catppuccin-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

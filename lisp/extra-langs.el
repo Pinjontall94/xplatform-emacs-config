@@ -18,14 +18,14 @@
 ;; Unix shell 🐚
 (use-package sh-mode :defer t
   :hook (sh-mode . (lambda ()
-		      (setq format-all-formatters
-			    '(("Shell" (shfmt "-i" "4" "-ci")))))))
+		     (setq format-all-formatters
+			   '(("Shell" (shfmt "-i" "4" "-ci")))))))
 
 ;; HTML/CSS 🌐
 (use-package mhtml-mode :ensure t :defer t
   :hook (mhtml-mode . (lambda ()
-			 (setq format-all-formatters
-			       '(("HTML" prettier))))))
+			(setq format-all-formatters
+			      '(("HTML" prettier))))))
 ;; zig 🦎
 (use-package zig-mode :ensure t :defer t)
 
@@ -88,6 +88,14 @@
 
 (use-package docker-compose-mode :ensure t :defer t)
 
+(use-package php-mode :ensure t :defer t
+  :init (with-eval-after-load 'eglot
+	  (add-to-list 'eglot-server-programs
+		       '(foo-mode . ("fools" "--stdio"))))
+  :hook ((php-mode . (lambda ()
+		       (setq format-all-formatters
+			     '(("php" (prettier "--write")))))))
+  :mode ("\\.php\\'" . php-mode))
 
 
 (message "loaded extra-langs.el! :3")

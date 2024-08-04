@@ -15,7 +15,14 @@
  ";; This buffer is dedicated, in respect and admiration,\12;; to the spirit that lives in the computer~ UwU...\12\12")
 
 ;; Enable parens matching, column numbers, and tab-bar
-(electric-pair-mode 1) (column-number-mode 1) (tab-bar-mode 1)
+(electric-pair-mode 1)
+(column-number-mode 1)
+(tab-bar-mode 1)
+
+;; Disable tool bar, menu bar, and scroll bar
+(tool-bar-mode 0)
+(menu-bar-mode 0)
+(scroll-bar-mode 0)
 
 ;; Enable lines
 (add-hook 'prog-mode-hook
@@ -24,5 +31,8 @@
 
 ;; Nice ligatures
 (add-hook 'prog-mode-hook #'prettify-symbols-mode)
+
+;; Since Emacs 29, `yes-or-no-p' will use `y-or-n-p'
+(setopt use-short-answers t)
 
 (provide 'emacs-conf)
