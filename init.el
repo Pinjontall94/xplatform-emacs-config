@@ -7,16 +7,44 @@
 ;; Load user lisp projects to the autoload path
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
+
 ;;   =====================================
 ;;  == Quality of life improvements... ==
 ;; =====================================
-(require 'emacs-conf)
+;; What follows is basically emacs' environment variables
+(setq-default
+ visible-bell t
+ compilation-scroll-output t  ; autoscroll the compilation window
+ backup-by-copying t          ; don't clobber symlinks
+ backup-directory-alist
+ '(("." . "~/.saves/"))       ; don't litter my fs tree
+ delete-old-versions t
+ kept-new-versions 6
+ kept-old-versions 2
+ version-control t            ; use versioned backups
+ inhibit-splash-screen t
+ org-agenda-files '("~/org")  ; Org(anize) your life, girl
+ initial-scratch-message
+ ";; This buffer is dedicated, in respect and admiration,\12;; to the spirit that lives in the computer~ UwU...\12\12")
 
-;; Nice theme and modeline for the modern era ;3
-(use-package adwaita-dark-theme :ensure t
-  :config
-  (load-theme 'adwaita-dark t))
-(use-package doom-modeline :ensure t :hook (after-init . doom-modeline-mode))
+;; Enable parens matching
+(electric-pair-mode 1)
+
+;; GUI configuration (toolbars, etc.)
+(require 'gui-conf)
+
+;; Enable lines
+(add-hook 'prog-mode-hook
+	  (lambda ()
+	    (display-line-numbers-mode t)))
+
+;; Nice ligatures
+(add-hook 'prog-mode-hook #'prettify-symbols-mode)
+
+;; Since Emacs 29, `yes-or-no-p' will use `y-or-n-p'
+(setopt use-short-answers t)
+
+(require 'theme-conf)  ;; includes modeline
 
 ;; Set exec-path to match $PATH environment variable
 (use-package exec-path-from-shell :ensure t
@@ -43,7 +71,7 @@
 	      ("C-c a" . eglot-code-actions)
 	      ("C-c r" . eglot-rename))
   :config
-  (setq eglot-ignored-server-capabilities '(:documentHighlightProvider))
+  (setq eglot-report-progress nil)
   (add-to-list 'eglot-server-programs
 	       '(verilog-mode . ("hdl_checker" "--lsp"))))
 
@@ -66,12 +94,8 @@
   :commands format-all-mode
   :hook (prog-mode . format-all-mode))
 
-;;   =====================
-;;  == EVIL Config >:3 ==
-;; =====================
-;; Highlight the following line, run
-;; `Alt-x uncomment-region`, save and reload to enable vim-keybindings
-(require 'evil-conf)
+
+
 
 ;;   ===============
 ;;  == Languages ==
@@ -91,9 +115,10 @@
 		c-ts-mode-indent-offset 4
 		c-mode-indent-offset 4))
 
-(require 'extra-langs)  ;; Load the rest so we don't clog up init.el ;3
-(require 'treemacs-conf)  ;; nerdtree (C-x t t)
-(require 'org-conf)
+(require 'extra-langs)		;; Load the rest so we don't clog up init.el ;3
+(require 'evil-conf)		;; run `Alt-x evil-mode <ENTER>` to toggle vim-keybindings
+(require 'treemacs-conf)	;; nerdtree (C-x t t)
+(require 'org-conf)             ;; org mode configuration
 (require 'misc-conf)
 
 ;; keybindings
@@ -109,10 +134,16 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("ee0785c299c1d228ed30cf278aab82cf1fa05a2dc122e425044e758203f097d2" default))
+   '("d77d6ba33442dd3121b44e20af28f1fae8eeda413b2c3d3b9f1315fbda021992" "ee0785c299c1d228ed30cf278aab82cf1fa05a2dc122e425044e758203f097d2" default))
  '(org-agenda-files '("/home/sammi/org/notes.org" "/home/sammi/org/todo.org") t)
  '(package-selected-packages
-   '(php-mode htmlize docker-compose-mode simple-httpd dired-auto-readme wat-ts-mode zig-mode yasnippet-snippets which-key treemacs-projectile treemacs-magit treemacs-icons-dired treemacs-evil pyvenv markdown-mode go-mode geiser-racket geiser-mit geiser-guile geiser-chicken geiser-chez format-all flycheck fish-mode exec-path-from-shell evil-collection doom-modeline dashboard conda company cmake-mode catppuccin-theme)))
+   '(emmet-mode org-static-blog web-mode php-mode htmlize docker-compose-mode simple-httpd dired-auto-readme wat-ts-mode zig-mode yasnippet-snippets which-key treemacs-projectile treemacs-magit treemacs-icons-dired treemacs-evil pyvenv markdown-mode go-mode geiser-racket geiser-mit geiser-guile geiser-chicken geiser-chez format-all flycheck fish-mode exec-path-from-shell evil-collection doom-modeline dashboard conda company cmake-mode catppuccin-theme))
+ '(sql-connection-alist
+   '(("primafleur-dev-empty"
+      (sql-product 'mysql)
+      (sql-user "root")
+      (sql-database "primafleur")
+      (sql-server "localhost")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

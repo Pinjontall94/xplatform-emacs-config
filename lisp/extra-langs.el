@@ -91,12 +91,17 @@
 (use-package php-mode :ensure t :defer t
   :init (with-eval-after-load 'eglot
 	  (add-to-list 'eglot-server-programs
-		       '(foo-mode . ("fools" "--stdio"))))
+		       '(php-mode . ("intelephense" "--stdio"))))
   :hook ((php-mode . (lambda ()
 		       (setq format-all-formatters
 			     '(("php" (prettier "--write")))))))
   :mode ("\\.php\\'" . php-mode))
 
+(use-package web-mode :ensure t :defer t
+  :mode ("\\.html\\'" . web-mode))
+
+(use-package emmet-mode :ensure t
+  :after web-mode)
 
 (message "loaded extra-langs.el! :3")
 (provide 'extra-langs)

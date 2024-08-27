@@ -1,3 +1,6 @@
+;;   =====================
+;;  == EVIL Config >:3 ==
+;; =====================
 (use-package evil :ensure t
   :init (setq evil-want-keybinding nil)
   :config (evil-mode 1))
