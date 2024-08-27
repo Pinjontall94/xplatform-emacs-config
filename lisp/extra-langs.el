@@ -4,12 +4,13 @@
 ;;; Code:
 (require 'format-all)
 
-
 ;; Cmake 🔺
 (use-package cmake-mode :ensure t :defer t)
 
+
 ;; Go 🐿️
 (use-package go-mode :ensure t :defer t)
+
 
 ;; C# 🪟
 (use-package csharp-mode :ensure t :defer t)
@@ -21,13 +22,23 @@
 		     (setq format-all-formatters
 			   '(("Shell" (shfmt "-i" "4" "-ci")))))))
 
+
 ;; HTML/CSS 🌐
-(use-package mhtml-mode :ensure t :defer t
-  :hook (mhtml-mode . (lambda ()
-			(setq format-all-formatters
-			      '(("HTML" prettier))))))
+(use-package web-mode :ensure t :defer t
+  :hook ((web-mode . (lambda ()
+		      (setq format-all-formatters
+			    '(("HTML" prettier)
+			      ("CSS" prettier)))))
+	 (web-mode . emmet-mode))
+  :mode (("\\.html\\'" . web-mode)
+	 ("\\.css\\'" . web-mode)))
+
+(use-package emmet-mode :ensure t :defer t)
+
+
 ;; zig 🦎
 (use-package zig-mode :ensure t :defer t)
+
 
 ;; Rust 🦀
 (use-package rust-ts-mode :ensure t :defer t)
@@ -97,11 +108,6 @@
 			     '(("php" (prettier "--write")))))))
   :mode ("\\.php\\'" . php-mode))
 
-(use-package web-mode :ensure t :defer t
-  :mode ("\\.html\\'" . web-mode))
-
-(use-package emmet-mode :ensure t
-  :after web-mode)
 
 (message "loaded extra-langs.el! :3")
 (provide 'extra-langs)

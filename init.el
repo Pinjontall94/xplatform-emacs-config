@@ -94,9 +94,6 @@
   :commands format-all-mode
   :hook (prog-mode . format-all-mode))
 
-
-
-
 ;;   ===============
 ;;  == Languages ==
 ;; ===============
