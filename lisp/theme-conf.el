@@ -1,7 +1,8 @@
 ;; Nice theme and modeline for the modern era ;3
-(use-package adwaita-dark-theme :ensure t
+(use-package catppuccin-theme :ensure t
   :config
-  (load-theme 'adwaita-dark t))
+  (load-theme 'catppuccin :no-confirm)
+  (catppuccin-load-flavor 'latte))
 
 (use-package doom-modeline :ensure t :hook (after-init . doom-modeline-mode))
 
