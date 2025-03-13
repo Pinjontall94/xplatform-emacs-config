@@ -127,6 +127,8 @@
 			     '(("php" (prettier "--write")))))))
   :mode ("\\.php\\'" . php-mode))
 
+(require 'fasm-mode)
+
 
 (message "loaded extra-langs.el! :3")
 (provide 'extra-langs)
