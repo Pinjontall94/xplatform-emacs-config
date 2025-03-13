@@ -1,3 +1,11 @@
+(use-package org
+  :config
+  (setq-default org-capture-templates
+	'(("t" "Todo" entry (file+headline "~/org/todo.org" "Tasks")
+	   "* TODO %?\n  %i\n  %a")
+	  ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
+	   "* %?\nEntered on %U\n  %i\n  %a"))))
+
 (use-package simple-httpd :ensure t)
 (use-package htmlize :ensure t)
 (setq-default org-html-validation-link nil            ;; Don't show validation link
@@ -10,9 +18,9 @@
   :config
   (setq org-static-blog-publish-title "trannus aran's blog")
   (setq org-static-blog-publish-url "https://trannusaran.neocities.org/")
-  (setq org-static-blog-publish-directory "~/org/public/blog/")
-  (setq org-static-blog-posts-directory "~/org/public/blog/posts/")
-  (setq org-static-blog-drafts-directory "~/org/public/blog/drafts/")
+  (setq org-static-blog-publish-directory "~/org/public/blog")
+  (setq org-static-blog-posts-directory "~/org/public/blog/posts")
+  (setq org-static-blog-drafts-directory "~/org/public/blog/drafts")
   (setq org-static-blog-enable-tags t)
   (setq org-export-with-toc nil)
   (setq org-export-with-section-numbers nil)
