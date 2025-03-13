@@ -23,17 +23,36 @@
 			   '(("Shell" (shfmt "-i" "4" "-ci")))))))
 
 
-;; HTML/CSS 🌐
+;; HTML 🌐
 (use-package web-mode :ensure t :defer t
   :hook ((web-mode . (lambda ()
 		      (setq format-all-formatters
-			    '(("HTML" prettier)
-			      ("CSS" prettier)))))
+			    '(("HTML" prettier)))))
 	 (web-mode . emmet-mode))
-  :mode (("\\.html\\'" . web-mode)
-	 ("\\.css\\'" . web-mode)))
+  :mode ("\\.html\\'" . web-mode))
+
+(use-package css-mode :ensure t :defer t
+  :hook ((css-mode . (lambda ()
+		      (setq format-all-formatters
+			    '(("CSS" prettier))))))
+  :mode ("\\.css\\'" . css-mode)
+  :config
+  (global-hl-line-mode 0))
 
 (use-package emmet-mode :ensure t :defer t)
+
+;; javascript 🥴
+(require 'eglot)
+(add-to-list 'eglot-server-programs '((js-mode typescript-mode) . (eglot-deno "deno" "lsp")))
+
+  (defclass eglot-deno (eglot-lsp-server) ()
+    :documentation "A custom class for deno lsp.")
+
+  (cl-defmethod eglot-initialization-options ((server eglot-deno))
+    "Passes through required deno initialization options"
+    (list :enable t
+    :lint t))
+
 
 
 ;; zig 🦎
