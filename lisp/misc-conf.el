@@ -6,7 +6,7 @@
 ;; show the readme in dired buffers
 (use-package dired-auto-readme :ensure t
   :config
-  (dired-auto-readme-mode t))
+  (dired-auto-readme-mode 1))
 
 (use-package impatient-mode :ensure t :defer t)
 (use-package simple-httpd :ensure t :defer t)
