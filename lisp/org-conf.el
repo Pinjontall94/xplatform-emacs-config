@@ -19,15 +19,15 @@
 ;; Org Static Blog
 (use-package org-static-blog :ensure t :defer t
   :config
-  (setq org-static-blog-publish-title "deathto.vc")
-  (setq org-static-blog-publish-url "https://staging.deathto.vc/")
-  (setq org-static-blog-publish-directory "~/org/public/blog")
-  (setq org-static-blog-posts-directory "~/org/public/blog/posts")
-  (setq org-static-blog-drafts-directory "~/org/public/blog/drafts")
-  (setq org-static-blog-enable-tags t)
-  (setq org-export-with-toc nil)
-  (setq org-export-with-section-numbers nil)
-  (setq org-static-blog-page-header
+  (setq org-static-blog-publish-title "deathto.vc"
+	org-static-blog-publish-url "https://staging.deathto.vc/"
+	org-static-blog-publish-directory "~/org/public/blog"
+	org-static-blog-posts-directory "~/org/public/blog/posts"
+	org-static-blog-drafts-directory "~/org/public/blog/drafts"
+	org-static-blog-enable-tags t
+	org-export-with-toc nil
+	org-export-with-section-numbers nil
+	org-static-blog-page-header
 	"<meta name=\"author\" content=\"deathto.vc\">
          <meta name=\"viewport\" content=\"initial-scale=1,width=device-width,minimum-scale=1\">
          <link rel=\"stylesheet\" href=\"https://cdn.simplecss.org/simple.min.css\" />
