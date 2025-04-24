@@ -10,25 +10,21 @@
 
 (use-package c-ts-mode
   :after format-all
-  :hook ((c-ts-mode . eglot-ensure)
-	 (c-ts-mode . (lambda ()
-		       (setq format-all-formatters
-			     '(("C" (clang-format "--style=Microsoft"))))))
-	 (c-ts-mode . c-ts-mode-toggle-comment-style))
+  :hook (c-ts-mode . (lambda ()
+		       (setq-default format-all-formatters
+			     '(("C" (clang-format))))))
   :config
-  (setq c-ts-mode-indent-offset 2)
+  (setq-default c-ts-mode-indent-offset 4)
   ;; Call clang-format whenever c-indent-region is called
   (fset 'c-indent-region 'format-all-buffer))
 
 (use-package c++-ts-mode
   :after format-all
-  :hook ((c++-ts-mode . eglot-ensure)
-	 (c++-ts-mode . (lambda ()
-		       (setq format-all-formatters
-			     '(("C" (clang-format "--style=Microsoft"))))))
-	 (c++-ts-mode . c++-ts-mode-toggle-comment-style))
+  :hook (c++-ts-mode . (lambda ()
+		       (setq-default format-all-formatters
+			     '(("C" (clang-format))))))
   :config
-  (setq c++-ts-mode-indent-offset 2)
+  (setq-default c++-ts-mode-indent-offset 4)
   ;; Call clang-format whenever c-indent-region is called
   (fset 'c-indent-region 'format-all-buffer))
 

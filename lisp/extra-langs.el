@@ -90,11 +90,17 @@
 
 
 ;; Scheme λ
-(use-package geiser-guile :ensure t :defer t)
+(use-package geiser :ensure t :defer t
+  :config
+  (setq geiser-active-implementations '(guile)))
+(use-package geiser-guile :ensure t :defer t
+  :config
+  (add-to-list 'geiser-guile-load-path "~/.guix-profile/bin/guile"))
 (use-package geiser-chicken :ensure t :defer t)
 (use-package geiser-mit :ensure t :defer t)
 (use-package geiser-chez :ensure t :defer t)
 (use-package geiser-racket :ensure t :defer t)
+(use-package geiser-chibi :ensure t :defer t)
 (use-package wisp-mode :ensure t :defer t)
 
 

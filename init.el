@@ -74,9 +74,9 @@
 
 (use-package eglot
   :bind (:map eglot-mode-map
-	      ("C-c d" . eldoc)
-	      ("C-c a" . eglot-code-actions)
-	      ("C-c r" . eglot-rename))
+	      ("C-c l d" . eldoc)
+	      ("C-c l a" . eglot-code-actions)
+	      ("C-c l r" . eglot-rename))
   :config
   (setq eglot-report-progress nil)
   (add-to-list 'eglot-server-programs
@@ -105,6 +105,7 @@
 ;; NOTE: use M-x treesit-install-language-grammar for new languages
 
 (require 'c-conf)
+(require 'lisp-conf)
 (require 'extra-langs)		;; Load the rest so we don't clog up init.el ;3
 (require 'evil-conf)		;; run `Alt-x evil-mode <ENTER>` to toggle vim-keybindings
 ;; (require 'god-conf)
@@ -115,13 +116,15 @@
 ;; keybindings
 (global-set-key (kbd "C-c RET") #'compile)
 (global-set-key (kbd "M-RET") #'recompile)
-(global-set-key (kbd "C-c l") #'org-store-link)
-(global-set-key (kbd "C-c a") #'org-agenda)
-(global-set-key (kbd "C-c c") #'org-capture)
+(global-set-key (kbd "C-c o l") #'org-store-link)
+(global-set-key (kbd "C-c o a") #'org-agenda)
+(global-set-key (kbd "C-c o c") #'org-capture)
 (global-set-key (kbd "C-c f") #'format-all-buffer)
 (global-set-key (kbd "C-c z") #'zen)
 (global-set-key (kbd "C-c e") #'eshell)
-(global-set-key (kbd "C-c s") #'eglot)
+(global-set-key (kbd "C-c l l") #'eglot)
+(global-set-key (kbd "C-c g") #'guix)
+(global-set-key (kbd "C-c r") #'geiser)
 ;; (global-set-key (kbd "<escape>") #'god-mode-all)
 
 
@@ -131,16 +134,55 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("24b6ade0e3cabdfee9fa487961b089d059e048d77fe13137ea4788c1b62bd99d" "d77d6ba33442dd3121b44e20af28f1fae8eeda413b2c3d3b9f1315fbda021992" "ee0785c299c1d228ed30cf278aab82cf1fa05a2dc122e425044e758203f097d2" default))
+   '("24b6ade0e3cabdfee9fa487961b089d059e048d77fe13137ea4788c1b62bd99d"
+     "d77d6ba33442dd3121b44e20af28f1fae8eeda413b2c3d3b9f1315fbda021992"
+     "ee0785c299c1d228ed30cf278aab82cf1fa05a2dc122e425044e758203f097d2"
+     default))
+ '(org-html-head-include-default-style nil t)
+ '(org-html-postamble-format '(("en" "<p class=\"postamble\">%t :: By %a :: %c</p>")))
+ '(org-html-validation-link nil t)
  '(package-selected-packages
-   '(treesit-auto hl-todo impatient-mode eglot wisp-mode god-mode emmet-mode org-static-blog web-mode php-mode htmlize docker-compose-mode simple-httpd dired-auto-readme wat-ts-mode zig-mode yasnippet-snippets which-key treemacs-projectile treemacs-magit treemacs-icons-dired treemacs-evil pyvenv markdown-mode go-mode geiser-racket geiser-mit geiser-guile geiser-chicken geiser-chez format-all flycheck fish-mode exec-path-from-shell evil-collection doom-modeline dashboard conda company cmake-mode catppuccin-theme))
- '(safe-local-variable-values '((flycheck-mode)))
+   '(bui catppuccin-theme cmake-mode company conda dashboard
+	 dired-auto-readme docker-compose-mode doom-modeline
+	 edit-indirect eglot emmet-mode evil-collection
+	 exec-path-from-shell fish-mode flycheck format-all
+	 geiser-chez geiser-chibi geiser-chicken geiser-guile
+	 geiser-mit geiser-racket go-mode god-mode hl-todo
+	 impatient-mode macrostep magit-popup org-static-blog php-mode
+	 pyvenv slime treemacs-evil treemacs-icons-dired
+	 treemacs-magit treemacs-projectile treesit-auto wat-ts-mode
+	 web-mode which-key wisp-mode yasnippet-snippets zig-mode))
+ '(safe-local-variable-values
+   '((eval let
+	   ((root-dir-unexpanded
+	     (locate-dominating-file default-directory
+				     ".dir-locals.el")))
+	   (when root-dir-unexpanded
+	     (let*
+		 ((root-dir (expand-file-name root-dir-unexpanded))
+		  (root-dir* (directory-file-name root-dir)))
+	       (unless (boundp 'geiser-guile-load-path)
+		 (defvar geiser-guile-load-path 'nil))
+	       (make-local-variable 'geiser-guile-load-path)
+	       (require 'cl-lib)
+	       (cl-pushnew root-dir* geiser-guile-load-path :test
+			   #'string-equal))))
+     (eval with-eval-after-load 'yasnippet
+	   (let
+	       ((guix-yasnippets
+		 (expand-file-name "etc/snippets/yas"
+				   (locate-dominating-file
+				    default-directory ".dir-locals.el"))))
+	     (unless (member guix-yasnippets yas-snippet-dirs)
+	       (add-to-list 'yas-snippet-dirs guix-yasnippets)
+	       (yas-reload-all))))
+     (eval setq-local guix-directory
+	   (locate-dominating-file default-directory ".dir-locals.el"))
+     (eval add-to-list 'completion-ignored-extensions ".go")
+     (flycheck-mode)))
  '(sql-connection-alist
-   '(("primafleur-dev-empty"
-      (sql-product 'mysql)
-      (sql-user "root")
-      (sql-database "primafleur")
-      (sql-server "localhost")))))
+   '(("primafleur-dev-empty" (sql-product 'mysql) (sql-user "root")
+      (sql-database "primafleur") (sql-server "localhost")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
