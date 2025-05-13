@@ -1,10 +1,6 @@
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-(when (not package-archive-contents)
-  (package-refresh-contents))
+;; -*- lexical-binding: t -*-
 
-;; Load user lisp projects to the autoload path
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (require 'hello)
 
@@ -12,28 +8,15 @@
 ;;  == Quality of life improvements... ==
 ;; =====================================
 ;; What follows is basically emacs' environment variables
-(setq
- visible-bell t
- compilation-scroll-output t  ; autoscroll the compilation window
- backup-by-copying t          ; don't clobber symlinks
- backup-directory-alist
- '(("." . "~/.saves/"))       ; don't litter my fs tree
- delete-old-versions t
- kept-new-versions 6
- kept-old-versions 2
- version-control t            ; use versioned backups
- inhibit-splash-screen t
- org-agenda-files (list "~/org" "~/.notes" "~/work")  ; Org(anize) your life, girl
- cursor-type 'bar
- ;; standard-indent 2
- initial-scratch-message
- ";; This buffer is dedicated, in respect and admiration,\12;; to the spirit that lives in the computer~ UwU...\12\12")
+(setq visible-bell t
+      compilation-scroll-output t  ; autoscroll the compilation window
+      inhibit-splash-screen t
+      org-agenda-files (list "~/org" "~/.notes" "~/work")  ; Org(anize) your life, girl
+      initial-scratch-message
+      ";; This buffer is dedicated, in respect and admiration,\12;; to the spirit that lives in the computer~ UwU...\12\12")
 (setopt use-short-answers t)
 
-(add-to-list 'initial-frame-alist '(fullscreen . maximized))
-
-;; highlight active line
-(global-hl-line-mode 1)
+;; (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
 ;; Enable parens matching
 (electric-pair-mode 1)
@@ -51,14 +34,6 @@
 ;; Nice ligatures
 (add-hook 'prog-mode-hook #'prettify-symbols-mode)
 
-(require 'theme-conf)  ;; includes modeline
-
-;; Set exec-path to match $PATH environment variable
-(use-package exec-path-from-shell :ensure t
-  :init (setq exec-path-from-shell-arguments nil)
-  :config
-  (when (memq window-system '(mac ns x))
-    (exec-path-from-shell-initialize)))
 
 ;; Git integration
 (use-package magit :ensure t :defer t :bind (("C-x g" . magit-status)))
@@ -86,10 +61,10 @@
 (use-package which-key :ensure t :config (which-key-mode))
 
 ;; Syntax checking
-(use-package flycheck :ensure t :defer t :init (global-flycheck-mode))
+(use-package flycheck :ensure t :defer t)
 
 ;; Code snippets so you don't have to type as much
-(use-package yasnippet :ensure t
+(use-package yasnippet
   :config
   (add-to-list 'load-path "~/.emacs.d/plugins/yasnippet")
   (yas-global-mode 1))
@@ -107,9 +82,6 @@
 (require 'c-conf)
 (require 'lisp-conf)
 (require 'extra-langs)		;; Load the rest so we don't clog up init.el ;3
-(require 'evil-conf)		;; run `Alt-x evil-mode <ENTER>` to toggle vim-keybindings
-;; (require 'god-conf)
-;; (require 'treemacs-conf)	;; nerdtree (C-x t t)
 (require 'org-conf)             ;; org mode configuration
 (require 'misc-conf)
 
@@ -125,67 +97,3 @@
 (global-set-key (kbd "C-c l l") #'eglot)
 (global-set-key (kbd "C-c g") #'guix)
 (global-set-key (kbd "C-c r") #'geiser)
-;; (global-set-key (kbd "<escape>") #'god-mode-all)
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("24b6ade0e3cabdfee9fa487961b089d059e048d77fe13137ea4788c1b62bd99d"
-     "d77d6ba33442dd3121b44e20af28f1fae8eeda413b2c3d3b9f1315fbda021992"
-     "ee0785c299c1d228ed30cf278aab82cf1fa05a2dc122e425044e758203f097d2"
-     default))
- '(org-html-head-include-default-style nil t)
- '(org-html-postamble-format '(("en" "<p class=\"postamble\">%t :: By %a :: %c</p>")))
- '(org-html-validation-link nil t)
- '(package-selected-packages
-   '(bui catppuccin-theme cmake-mode company conda dashboard
-	 dired-auto-readme docker-compose-mode doom-modeline
-	 edit-indirect eglot emmet-mode evil-collection
-	 exec-path-from-shell fish-mode flycheck format-all
-	 geiser-chez geiser-chibi geiser-chicken geiser-guile
-	 geiser-mit geiser-racket go-mode god-mode hl-todo
-	 impatient-mode macrostep magit-popup org-static-blog php-mode
-	 pyvenv slime treemacs-evil treemacs-icons-dired
-	 treemacs-magit treemacs-projectile treesit-auto wat-ts-mode
-	 web-mode which-key wisp-mode yasnippet-snippets zig-mode))
- '(safe-local-variable-values
-   '((eval let
-	   ((root-dir-unexpanded
-	     (locate-dominating-file default-directory
-				     ".dir-locals.el")))
-	   (when root-dir-unexpanded
-	     (let*
-		 ((root-dir (expand-file-name root-dir-unexpanded))
-		  (root-dir* (directory-file-name root-dir)))
-	       (unless (boundp 'geiser-guile-load-path)
-		 (defvar geiser-guile-load-path 'nil))
-	       (make-local-variable 'geiser-guile-load-path)
-	       (require 'cl-lib)
-	       (cl-pushnew root-dir* geiser-guile-load-path :test
-			   #'string-equal))))
-     (eval with-eval-after-load 'yasnippet
-	   (let
-	       ((guix-yasnippets
-		 (expand-file-name "etc/snippets/yas"
-				   (locate-dominating-file
-				    default-directory ".dir-locals.el"))))
-	     (unless (member guix-yasnippets yas-snippet-dirs)
-	       (add-to-list 'yas-snippet-dirs guix-yasnippets)
-	       (yas-reload-all))))
-     (eval setq-local guix-directory
-	   (locate-dominating-file default-directory ".dir-locals.el"))
-     (eval add-to-list 'completion-ignored-extensions ".go")
-     (flycheck-mode)))
- '(sql-connection-alist
-   '(("primafleur-dev-empty" (sql-product 'mysql) (sql-user "root")
-      (sql-database "primafleur") (sql-server "localhost")))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
