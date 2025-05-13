@@ -28,3 +28,4 @@ early-init.el
 *.bak
 /recentf
 /bookmarks
+/plugins/
