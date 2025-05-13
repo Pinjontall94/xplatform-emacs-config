@@ -101,7 +101,6 @@
 (use-package geiser-chez :ensure t :defer t)
 (use-package geiser-racket :ensure t :defer t)
 (use-package geiser-chibi :ensure t :defer t)
-(use-package wisp-mode :ensure t :defer t)
 
 
 ;; Verilog ⚒️
