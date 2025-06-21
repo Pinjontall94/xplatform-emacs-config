@@ -34,6 +34,10 @@
 ;; Nice ligatures
 (add-hook 'prog-mode-hook #'prettify-symbols-mode)
 
+;; Emacs pull envvars from shell
+(use-package exec-path-from-shell :ensure t
+  :config
+  (exec-path-from-shell-initialize))
 
 ;; Git integration
 (use-package magit :ensure t :defer t :bind (("C-x g" . magit-status)))
