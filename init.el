@@ -16,7 +16,7 @@
       ";; This buffer is dedicated, in respect and admiration,\12;; to the spirit that lives in the computer~ UwU...\12\12")
 (setopt use-short-answers t)
 
-;; (add-to-list 'initial-frame-alist '(fullscreen . maximized))
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
 ;; Enable parens matching
 (electric-pair-mode 1)
@@ -97,3 +97,29 @@
 (global-set-key (kbd "C-c l l") #'eglot)
 (global-set-key (kbd "C-c g") #'guix)
 (global-set-key (kbd "C-c r") #'geiser)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(catppuccin-theme cmake-mode cobol-mode company conda
+		      dired-auto-readme docker-compose-mode
+		      doom-modeline emmet-mode evil-collection
+		      exec-path-from-shell fish-mode flycheck
+		      format-all geiser-chez geiser-chibi
+		      geiser-chicken geiser-guile geiser-mit
+		      geiser-racket go-mode hl-todo impatient-mode
+		      magit org-static-blog php-mode pyvenv slime
+		      slime-company treemacs-evil wat-ts-mode web-mode
+		      yasnippet-snippets zig-mode))
+ '(safe-local-variable-values
+   '((geiser-guile-binary . "./guile")
+     (geiser-repl-add-project-paths "module")
+     (org-startup-with-inline-images . t) (standard-indent . 2))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
